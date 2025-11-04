@@ -101,7 +101,7 @@
 		
 		<script>
 			async function getData(person){
-				let data = await fetch(`interviews/${person}`).then(res=>res.text())
+				let data = await fetch(`interviews/${person}.txt`).then(res=>res.text())
 				data = data.split("\n")
 				return data
 			}
@@ -119,7 +119,7 @@
 						<p class="summa">Interview Summary: ${stuff[5]}</p>
 					</div>
 					<div>
-						<img src="images/${people[cycle]}" class="img"/>
+						<img src="images/${people[cycle]}.jpg" class="img"/>
 					</div>
 				`)
 			}
