@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Alumni Interviews</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> 
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back,arrow_forward" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+	<style>
+		:root{
+			background-color: beige;
+			font-family:  Noto Serif ;
+		}
+
+		#header{
+			color:black;
+			text-align: center;
+		}
+		#container{
+			display:flex;
+			flex-basis: 0;
+			padding: 20px;
+			border-radius: 20px;
+			margin: 50px;
+			margin-top: 5px;
+			background-color: white;
+		}
+		#container > *{
+			flex: 1 1 0px;
+			margin: 20px;
+			width: 0;
+		}
+
+		.img{
+			object-fit: contain;
+			object-position: center;
+			width:100%;
+		}
+
+		.title, .date{
+			margin: 0;
+			padding: 0;
+		}
+		h3{
+			font-size: small;
+		}
+		h2{
+			font-size: 25px;
+		}
+
+		.bg, .summa{
+			font-size: 12px;
+		}
+
+		blockquote{
+			font-size: 15px;
+		}
+
+		.nav{
+			color: white;
+			background-color: black;
+			border-radius: 100px;
+		}
+
+		#carousel{
+			display: flex;
+			width: 100%;
+			margin: 0;
+		}
+
+		#carousel > *{
+			flex: 1 1 0;
+			margin: 50px;
+			margin-top: 15px;
+			margin-bottom: 15px;
+			text-align: center;
+			font-size: 40px;
+		}
+		body{
+			width: 100%;
+			overflow-x: hidden;
+		}
+	</style>
+</head>
+<body>
+		<div id="header">
+			<h1>Learn the stories of the past alumni of Westwood</h1>
+		</div>
+			<!-- <span class="material-symbols-outlined nav" id="back">arrow_back</span> -->
+		<div id="carousel">
+			<span class="material-symbols-outlined nav" id="back">arrow_back</span>
+			<span class="material-symbols-outlined nav" id="forward">arrow_forward</span>
+		</div>
+		<div id="container">
+		
+		</div>		
+		
+		
+		<script>
+			async function getData(person){
+				let data = await fetch(`interviews/${person}`).then(res=>res.text())
+				data = data.split("\n")
+				return data
+			}
+			const people = ["mackowiak", "sparkman",  "mahoney", "junu"];
+			let cycle = 0;
+			async function showNew(){
+				let stuff = await getData(people[cycle])
+				stuff[1] = Number(stuff[1])
+				$("#container").html(`
+					<div class="content">
+						<h2 class="title">${stuff[0]} (${stuff[1] - 4} - ${stuff[1]})</h2>
+						<h3 class="date">Interviewed ${stuff[2]}</h3>
+						<blockquote class="quote"><i>${stuff[4]}</i></blockquote>
+						<p class="bg">Background: ${stuff[3]}</p>
+						<p class="summa">Interview Summary: ${stuff[5]}</p>
+					</div>
+					<div>
+						<img src="images/${people[cycle]}" class="img"/>
+					</div>
+				`)
+			}
+
+			showNew();
+			$("#forward").click(()=>{
+				cycle++;
+				cycle %= 4;
+				showNew();
+			})
+
+			$("#back").click(()=>{
+				cycle += 3;
+				cycle %= 4;
+				showNew();
+			})
+		</script>
+</body>
+</html>
